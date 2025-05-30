@@ -1,0 +1,9 @@
+{
+    "name": "grau/ceunsp",
+    "require": {},
+    "config": {
+        "platform": {
+            "php": "7.4.3"
+        }
+    }
+}
