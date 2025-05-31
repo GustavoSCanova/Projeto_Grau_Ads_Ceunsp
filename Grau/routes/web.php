@@ -28,4 +28,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Apenas alunos
+Route::middleware(['auth', 'tipo:aluno'])->group(function () {
+    Route::get('/painel-aluno', function () {
+        return view('painel.aluno');
+    });
+});
+
+// Apenas professores
+Route::middleware(['auth', 'tipo:professor'])->group(function () {
+    Route::get('/painel-professor', function () {
+        return view('painel.professor');
+    });
+});
+
+
 require __DIR__.'/auth.php';
