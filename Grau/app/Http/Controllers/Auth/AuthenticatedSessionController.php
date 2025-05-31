@@ -25,16 +25,27 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
 
+         $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+        'tipo' => ['required', 'in:aluno,professor'], // Validação do tipo
+    ]);
+
+    if (Auth::attempt([
+        'email' => $credentials['email'],
+        'password' => $credentials['password'],
+        'tipo' => $credentials['tipo'], // Confere se o tipo corresponde
+    ])) {
         $request->session()->regenerate();
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
+    return back()->withErrors([
+        'email' => 'As credenciais fornecidas estão incorretas.',
+    ]);
+}
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
